@@ -11,9 +11,10 @@ private:
 	vector<int> prices;
 public:
 	Client();
-	inline void ModifyMakes(const string& make);
-	inline void ModifyModels(const string& model);
-	inline void ModifyFuelTypes(const string& fuel_type);
-	inline void ModifyYears(const int& year);
-	inline void ModifyPrices(const int& price);
+	void ModifyMakes(const string& make);
+	void ModifyModels(const string& model);
+	void ModifyFuelTypes(const string& fuel_type);
+	void ModifyYears(const int& year);
+	void ModifyPrices(const int& price);
+	bool SaveCar();
 };

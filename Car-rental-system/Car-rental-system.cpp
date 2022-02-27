@@ -9,7 +9,7 @@ int main()
 		unique_ptr<Client> client = make_unique<Client>();
 	}
 	catch (const exception& e)
-	{	
+	{
 		cout << e.what();
 		Sleep(1000);
 		return 0;
@@ -25,8 +25,8 @@ int main()
 	// Main Menu
 	while (choice <= 0 || choice > 3)
 	{
-		cout << CenteredText("Welcome In Car Rental System\n\n", 20);
-		cout << "1) Login as Admin\n";
+		cout << CenteredText("Welcome In Car Rental System", 20);
+		cout << "\n\n1) Login as Admin\n";
 		cout << "2) Run App As Client\n";
 		cout << "3) Exit\n";
 		cout << "Your Choice: "; cin >> choice;
@@ -49,7 +49,7 @@ int main()
 			}
 			else
 			{
-				throw std::ios::failure("\nError Opening A File!\n");
+				throw std::ios::failure("Error Opening A File!\n");
 			}
 		}
 		catch (const exception& e)
@@ -60,20 +60,21 @@ int main()
 		}
 		if (username != right_username || password != right_password)
 		{
-			cout << "\nWron Username Or Password\n";
+			cout << "Wrong Username Or Password\n";
 			Sleep(1000);
 			return 0;
 		}
-		cout << "\nLogin Successfull\n";
+		cout << "Login Successfull\n";
 		Sleep(1000);
 		// Admin's Menu
 		while (true)
 		{
 			system("cls");
+			choice = 0;
 			while (choice <= 0 || choice > 8)
 			{
-				cout << CenteredText("Admin's Menu\n\n", 20);
-				cout << "1) Add A Car\n";
+				cout << CenteredText("Admin's Menu", 20);
+				cout << "\n\n1) Add A Car\n";
 				cout << "2) Update Car's Details\n";
 				cout << "3) Remove Any Car\n";
 				cout << "4) List Of Cars\n";
@@ -88,12 +89,25 @@ int main()
 			{
 			case 1:
 				// Add New Car
-				cout << CenteredText("Add New Car\n\n", 20);
-				cout << "Car's Make: "; getline(cin >> ws, make);
+				cout << CenteredText("Add New Car", 20);
+				cout << "\n\nCar's Make: "; getline(cin >> ws, make);
 				cout << "Model: "; getline(cin >> ws, model);
-				cout << "Year Of Production: "; cin >> year;
 				cout << "Fuel Type: "; getline(cin >> ws, fuel_type);
+				cout << "Year Of Production: "; cin >> year;
 				cout << "Price for 1 day (CZK): "; cin >> price;
+				try
+				{
+					if(admin->AddCar(make, model, fuel_type, year, price));
+					{
+						cout << "\nCar Successfully Added\n";
+					}
+				}
+				catch(const exception& e)
+				{
+					cout << e.what();
+					Sleep(1000);
+					break;
+				}
 				break;
 			case 2:
 				// Update Car's Details
@@ -119,7 +133,6 @@ int main()
 			}
 			cout << "\n\n\nPress [Escape] For Menu\n";
 			while ((0x8000 & GetAsyncKeyState((unsigned char)(VK_ESCAPE))) == 0) {}
-			break;
 		}
 	case 2:
 	case 3:
