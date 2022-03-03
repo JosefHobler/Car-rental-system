@@ -1,12 +1,16 @@
 ﻿#include "Custom Functions.h"
+#include "Client.h"
 #include "Admin.h"
 
 int main()
 {
 	// Basic Variables
+	unique_ptr<Client> client;
+	unique_ptr<Admin> admin;
 	try
 	{
-		unique_ptr<Client> client = make_unique<Client>();
+		client = make_unique<Client>();
+		admin = make_unique<Admin>();
 	}
 	catch (const exception& e)
 	{
@@ -14,10 +18,9 @@ int main()
 		Sleep(1000);
 		return 0;
 	}
-	unique_ptr<Admin> admin = make_unique<Admin>();
 	int choice = 0;
 	// Logging Variables
-	string username, password, right_username, right_password;
+	string username, password;
 	// Add Function Variables
 	string make, model, fuel_type;
 	int year, price;
@@ -40,27 +43,16 @@ int main()
 		cout << "Enter Password: "; cin >> password; cout << "\n";
 		try
 		{
-			ifstream admin("Admin.txt");
-			if (admin.is_open())
+			if (!admin->Login(username, password))
 			{
-				getline(admin, right_username);
-				getline(admin, right_password);
-				admin.close();
-			}
-			else
-			{
-				throw std::ios::failure("Error Opening A File!\n");
+				cout << "Wrong Username Or Password\n";
+				Sleep(1000);
+				return 0;
 			}
 		}
 		catch (const exception& e)
 		{
 			cout << e.what();
-			Sleep(1000);
-			return 0;
-		}
-		if (username != right_username || password != right_password)
-		{
-			cout << "Wrong Username Or Password\n";
 			Sleep(1000);
 			return 0;
 		}
@@ -117,12 +109,13 @@ int main()
 				break;
 			case 4:
 				// List Of Cars
+				admin->ShowCarDetails();
 				break;
 			case 5:
 				// Check Any Car
 				break;
 			case 6:
-				// Modify Rent Detailts
+				// Modify Rent Details
 				break;
 			case 7:
 				// Rent A Car
@@ -135,6 +128,42 @@ int main()
 			while ((0x8000 & GetAsyncKeyState((unsigned char)(VK_ESCAPE))) == 0) {}
 		}
 	case 2:
+		// Client Menu 1.
+		choice = 0;
+		while (choice <= 0 || choice > 2)
+		{
+			cout << "1) Login As Client\n";
+			cout << "2) Register As Client\n";
+			cout << "Your Choice: "; cin >> choice;
+			system("cls");
+		}
+		switch (choice)
+		{
+		case 1:
+			// Login As Client
+			cout << "Enter Username: "; cin >> username;
+			cout << "Enter Password: "; cin >> password; cout << "\n";
+			try
+			{
+				if (!client->Login(username, password))
+				{
+					cout << "Wrong Username Or Password\n";
+					Sleep(1000);
+					return 0;
+				}
+			}
+			catch (const exception& e)
+			{
+				cout << e.what();
+				Sleep(1000);
+				return 0;
+			}
+			cout << "Login Successfull\n";
+			Sleep(1000);
+			break;
+		case 2:
+			break;
+		}
 	case 3:
 		// Exit
 		return 0;

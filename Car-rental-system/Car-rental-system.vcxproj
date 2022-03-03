@@ -143,11 +143,13 @@
     <ClCompile Include="Car-rental-system.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Custom Functions.cpp" />
+    <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Custom Functions.h" />
+    <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

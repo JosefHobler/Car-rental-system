@@ -17,7 +17,7 @@ Lamborghini
 Aventador
 Electro
 2000
-10
+0
 Fiat
 Multipla
 Nevim
