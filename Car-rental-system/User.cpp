@@ -28,7 +28,7 @@ User::User()
 	}
 }
 
-bool User::SaveCarDetails()
+bool User::SaveCarDetails() const
 {
 	ofstream save_from_vecs("Cars.txt");
 	if (save_from_vecs.is_open())
@@ -55,7 +55,7 @@ bool User::SaveCarDetails()
 	return true;
 }
 
-void User::ShowCarDetails()
+void User::ShowCars() const
 {
 	cout << CenteredText("Makes", 15) << "|" << CenteredText("Model", 15) << "|" <<
 		CenteredText("Fuel Type", 15) << "|" << CenteredText("Year Prod.", 10) << "|" << CenteredText("Price", 12);
@@ -68,13 +68,3 @@ void User::ShowCarDetails()
 		cout << "\n";
 	}
 }
-
-void User::ModifyFuelTypes(const string& fuel_type) { fuel_types.push_back(fuel_type); }
-
-void User::ModifyModels(const string& model) { models.push_back(model); }
-
-void User::ModifyMakes(const string& make) { makes.push_back(make); }
-
-void User::ModifyYears(const int& year) { years.push_back(year); }
-
-void User::ModifyPrices(const int& price) { prices.push_back(price); }

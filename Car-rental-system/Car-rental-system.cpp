@@ -109,7 +109,7 @@ int main()
 				break;
 			case 4:
 				// List Of Cars
-				admin->ShowCarDetails();
+				admin->ShowCars();
 				break;
 			case 5:
 				// Check Any Car
@@ -137,12 +137,12 @@ int main()
 			cout << "Your Choice: "; cin >> choice;
 			system("cls");
 		}
+		cout << "Enter Username: "; cin >> username;
+		cout << "Enter Password: "; cin >> password; cout << "\n";
 		switch (choice)
 		{
 		case 1:
 			// Login As Client
-			cout << "Enter Username: "; cin >> username;
-			cout << "Enter Password: "; cin >> password; cout << "\n";
 			try
 			{
 				if (!client->Login(username, password))
@@ -162,7 +162,58 @@ int main()
 			Sleep(1000);
 			break;
 		case 2:
+			// Register New Client
+			try
+			{
+				client->Register(username, password);
+			}
+			catch (const exception& e)
+			{
+				cout << e.what();
+				Sleep(1000);
+				return 0;
+			}
+			cout << "Register Successfull\n";
+			Sleep(1000);
 			break;
+		}
+		while (true)
+		{
+			// Client Menu 2.
+			system("cls");
+			choice = 0;
+			while (choice <= 0 || choice > 5)
+			{
+				cout << CenteredText("Client's Menu", 20);
+				cout << "\n\n1) List Of Cars\n";
+				cout << "2) Check Any Car\n";
+				cout << "3) Modify Rent Details\n";
+				cout << "4) Rent A Car\n";
+				cout << "5) Exit\n";
+				cout << "Your Choice: "; cin >> choice;
+				system("cls");
+			}
+			switch (choice)
+			{
+			case 1:
+				// List Of Cars
+				client->ShowCars();
+				break;
+			case 2:
+				// Check Any Car
+				break;
+			case 3:
+				// Modify Rent Details
+				break;
+			case 4:
+				// Rent A Car
+				break;
+			case 5:
+				// Exit
+				return 0;
+			}
+			cout << "\n\n\nPress [Escape] For Menu\n";
+			while ((0x8000 & GetAsyncKeyState((unsigned char)(VK_ESCAPE))) == 0) {}
 		}
 	case 3:
 		// Exit

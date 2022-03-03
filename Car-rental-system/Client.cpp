@@ -24,3 +24,18 @@ bool Client::Login(const string& username, const string& password)
 	client.close();
 	return false;
 }
+
+void Client::Register(const string& username, const string& password) const
+{
+	ofstream client;
+	client.open("Clients.txt", ios::app);
+	if (client.is_open())
+	{
+		client << "\n" << username << "\n" << password;
+		client.close();
+	}
+	else
+	{
+		throw std::ios::failure("Error Opening A File!\n");
+	}
+}
