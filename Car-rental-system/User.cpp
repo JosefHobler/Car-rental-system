@@ -50,6 +50,7 @@ bool User::SaveCarDetails() const
 	else
 	{
 		throw std::ios::failure("\nError Opening A File!\n");
+		this_thread::sleep_for(std::chrono::seconds(1));
 		return false;
 	}
 	return true;
@@ -66,5 +67,13 @@ void User::ShowCars() const
 			CenteredText(fuel_types[i], 15) << "|" << CenteredText(to_string(years[i]), 10) <<
 			"|" << CenteredText((prices[i] != 0) ? to_string(prices[i]) : "Unavailable", 12);
 		cout << "\n";
+	}
+}
+
+void User::ChooseCar() const
+{
+	for (int i = 0; i < makes.size(); i++)
+	{
+		cout << i + 1 << ") " << makes[i] << " " << models[i] << "\n";
 	}
 }

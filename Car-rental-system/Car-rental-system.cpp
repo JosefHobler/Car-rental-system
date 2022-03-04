@@ -2,9 +2,20 @@
 #include "Client.h"
 #include "Admin.h"
 
+// Develop:
+//
+// Precompiled headers
+//
+// Lambda for try-catch functions
+//
+// Separating #includes into different files by best practice
+//
+// Making Files More Readable 
+
 int main()
 {
 	// Basic Variables
+	vector<string> buffer;
 	unique_ptr<Client> client;
 	unique_ptr<Admin> admin;
 	try
@@ -15,26 +26,38 @@ int main()
 	catch (const exception& e)
 	{
 		cout << e.what();
-		Sleep(1000);
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		return 0;
 	}
 	int choice = 0;
+	// Lambda For Displaying Menu
+	auto Menus = [&choice, &buffer](string title) {
+		choice = 0;
+		while (choice <= 0 || choice > buffer.size())
+		{
+			cout << CenteredText(title, 20) << "\n\n";
+			for (int i = 0; i < buffer.size(); i++)
+			{
+				cout << i + 1 << ") " << buffer[i] << "\n";
+			}
+			cout << "Your Choice: "; cin >> choice;
+			system("cls");
+		}
+		buffer.clear();
+	};
 	// Logging Variables
 	string username, password;
 	// Add Function Variables
 	string make, model, fuel_type;
 	int year, price;
-	
+	// Modify Details;
+	int choice_helper; string new_car_detail_name;
+
 	// Main Menu
-	while (choice <= 0 || choice > 3)
-	{
-		cout << CenteredText("Welcome In Car Rental System", 20);
-		cout << "\n\n1) Login as Admin\n";
-		cout << "2) Run App As Client\n";
-		cout << "3) Exit\n";
-		cout << "Your Choice: "; cin >> choice;
-		system("cls");
-	}
+	buffer.push_back("Login as Admin");
+	buffer.push_back("Run App As Client");
+	buffer.push_back("Exit");
+	Menus("Welcome In Car Rental System");
 	switch (choice)
 	{
 	case 1:
@@ -46,37 +69,31 @@ int main()
 			if (!admin->Login(username, password))
 			{
 				cout << "Wrong Username Or Password\n";
-				Sleep(1000);
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 				return 0;
 			}
 		}
 		catch (const exception& e)
 		{
 			cout << e.what();
-			Sleep(1000);
+			std::this_thread::sleep_for(std::chrono::seconds(1));
 			return 0;
 		}
 		cout << "Login Successfull\n";
-		Sleep(1000);
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		// Admin's Menu
 		while (true)
 		{
 			system("cls");
-			choice = 0;
-			while (choice <= 0 || choice > 8)
-			{
-				cout << CenteredText("Admin's Menu", 20);
-				cout << "\n\n1) Add A Car\n";
-				cout << "2) Update Car's Details\n";
-				cout << "3) Remove Any Car\n";
-				cout << "4) List Of Cars\n";
-				cout << "5) Check Any Car\n";
-				cout << "6) Modify Rent Details\n";
-				cout << "7) Rent A Car\n";
-				cout << "8) Exit\n";
-				cout << "Your Choice: "; cin >> choice;
-				system("cls");
-			}
+			buffer.push_back("Add A Car");
+			buffer.push_back("Update Car Details");
+			buffer.push_back("Remove Any Car");
+			buffer.push_back("List Of Cars");
+			buffer.push_back("Check Any Car");
+			buffer.push_back("Modify Rent Details");
+			buffer.push_back("Rent A Car");
+			buffer.push_back("Exit");
+			Menus("Admin's Menu");
 			switch (choice)
 			{
 			case 1:
@@ -89,23 +106,86 @@ int main()
 				cout << "Price for 1 day (CZK): "; cin >> price;
 				try
 				{
-					if(admin->AddCar(make, model, fuel_type, year, price));
+					if(!admin->AddCar(make, model, fuel_type, year, price))
 					{
-						cout << "\nCar Successfully Added\n";
+						cout << "\nCar Not Added Due To Error\n";
+						std::this_thread::sleep_for(std::chrono::seconds(1));
+						return 0;
 					}
 				}
-				catch(const exception& e)
+				catch (const exception& e)
 				{
 					cout << e.what();
-					Sleep(1000);
-					break;
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+					return 0;
 				}
+				cout << "\nCar Successfully Added\n";
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 				break;
 			case 2:
 				// Update Car's Details
+				choice = 0;
+				while (choice <= 0 || choice > admin->GetCars())
+				{
+					cout << CenteredText("Choose car", 20) << "\n\n";
+					admin->ChooseCar();
+					cout << "Your Choice: "; cin >> choice;
+					system("cls");
+				}
+				choice_helper = choice;
+				buffer.push_back("Make");
+				buffer.push_back("Model");
+				buffer.push_back("Fuel Type");
+				buffer.push_back("Year Of Production");
+				buffer.push_back("Price");
+				Menus("Details To Modify");
+				cout << "Write New Car Detail: "; cin >> new_car_detail_name;
+				system("cls");
+				try
+				{
+					if (!admin->Update(choice_helper - 1, choice, new_car_detail_name))
+					{
+						cout << "Car Detail Not Modified Due To Error\n";
+						std::this_thread::sleep_for(std::chrono::seconds(1));
+						return 0;
+					}
+				}
+				catch (const exception& e)
+				{
+					cout << e.what();
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+					return 0;
+				}
+				cout << "Car Detail Succesfully Modified\n";
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 				break;
 			case 3:
 				// Remove Any Car
+				choice = 0;
+				while (choice <= 0 || choice > admin->GetCars())
+				{
+					cout << CenteredText("Choose car", 20) << "\n\n";
+					admin->ChooseCar();
+					cout << "Your Choice: "; cin >> choice;
+					system("cls");
+				}
+				try
+				{
+					if (!admin->Remove(choice - 1))
+					{
+						cout << "Car Not Removed Due To Error\n";
+						std::this_thread::sleep_for(std::chrono::seconds(1));
+						return 0;
+					}
+				}
+				catch (const exception& e)
+				{
+					cout << e.what();
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+					return 0;
+				}
+				cout << "Car Successfully Removed\n";
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 				break;
 			case 4:
 				// List Of Cars
@@ -124,19 +204,15 @@ int main()
 				// Exit
 				return 0;
 			}
-			cout << "\n\n\nPress [Escape] For Menu\n";
-			while ((0x8000 & GetAsyncKeyState((unsigned char)(VK_ESCAPE))) == 0) {}
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+			cout << "\n\n\nPress [Any Key] For Menu\n";
+			_getch();
 		}
 	case 2:
 		// Client Menu 1.
-		choice = 0;
-		while (choice <= 0 || choice > 2)
-		{
-			cout << "1) Login As Client\n";
-			cout << "2) Register As Client\n";
-			cout << "Your Choice: "; cin >> choice;
-			system("cls");
-		}
+		buffer.push_back("Login As Client");
+		buffer.push_back("Register As Client");
+		Menus("Client Login Menu");
 		cout << "Enter Username: "; cin >> username;
 		cout << "Enter Password: "; cin >> password; cout << "\n";
 		switch (choice)
@@ -148,18 +224,18 @@ int main()
 				if (!client->Login(username, password))
 				{
 					cout << "Wrong Username Or Password\n";
-					Sleep(1000);
+					std::this_thread::sleep_for(std::chrono::seconds(1));
 					return 0;
 				}
 			}
 			catch (const exception& e)
 			{
 				cout << e.what();
-				Sleep(1000);
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 				return 0;
 			}
 			cout << "Login Successfull\n";
-			Sleep(1000);
+			std::this_thread::sleep_for(std::chrono::seconds(1));
 			break;
 		case 2:
 			// Register New Client
@@ -170,29 +246,23 @@ int main()
 			catch (const exception& e)
 			{
 				cout << e.what();
-				Sleep(1000);
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 				return 0;
 			}
 			cout << "Register Successfull\n";
-			Sleep(1000);
+			std::this_thread::sleep_for(std::chrono::seconds(1));
 			break;
 		}
 		while (true)
 		{
 			// Client Menu 2.
 			system("cls");
-			choice = 0;
-			while (choice <= 0 || choice > 5)
-			{
-				cout << CenteredText("Client's Menu", 20);
-				cout << "\n\n1) List Of Cars\n";
-				cout << "2) Check Any Car\n";
-				cout << "3) Modify Rent Details\n";
-				cout << "4) Rent A Car\n";
-				cout << "5) Exit\n";
-				cout << "Your Choice: "; cin >> choice;
-				system("cls");
-			}
+			buffer.push_back("List Of Cars");
+			buffer.push_back("Check Any Car");
+			buffer.push_back("Modify Rent Details");
+			buffer.push_back("Rent A Car");
+			buffer.push_back("Exit");
+			Menus("Client Menu");
 			switch (choice)
 			{
 			case 1:
@@ -212,8 +282,8 @@ int main()
 				// Exit
 				return 0;
 			}
-			cout << "\n\n\nPress [Escape] For Menu\n";
-			while ((0x8000 & GetAsyncKeyState((unsigned char)(VK_ESCAPE))) == 0) {}
+			cout << "\n\n\nPress [Any Key] For Menu\n";
+			_getch();
 		}
 	case 3:
 		// Exit
