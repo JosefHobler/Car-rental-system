@@ -6,6 +6,8 @@
 // Lambda for try-catch functions
 // 
 // Making Files More Readable 
+//
+// Define std::cout, etc.
 
 int main()
 {
