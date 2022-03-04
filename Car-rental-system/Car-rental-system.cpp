@@ -11,6 +11,8 @@
 // Separating #includes into different files by best practice
 //
 // Making Files More Readable 
+//
+// Define std::cout, etc.
 
 int main()
 {
