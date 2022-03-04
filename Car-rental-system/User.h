@@ -1,18 +1,17 @@
 #pragma once
-#include "Custom Functions.h"
 
 class User
 {
 protected:
-	vector<string> makes;
-	vector<string> models;
-	vector<string> fuel_types;
-	vector<int> years;
-	vector<int> prices;
+	std::vector<std::string> makes;
+	std::vector<std::string> models;
+	std::vector<std::string> fuel_types;
+	std::vector<int> years;
+	std::vector<int> prices;
 public:
 	User();
 
-	virtual bool Login(const string& username, const string& password) = 0;
+	virtual bool Login(const std::string& username, const std::string& password) = 0;
 	
 	bool SaveCarDetails() const;
 	void ShowCars() const; 

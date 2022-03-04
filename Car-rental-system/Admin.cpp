@@ -1,9 +1,10 @@
+#include "pch.h"
 #include "Admin.h"
 
-bool Admin::Login(const string& username, const string& password)
+bool Admin::Login(const std::string& username, const std::string& password)
 {
-	string right_username, right_password;
-	ifstream admin("Admin.txt");
+	std::string right_username, right_password;
+	std::ifstream admin("Admin.txt");
 	if (admin.is_open())
 	{
 		getline(admin, right_username);
@@ -17,7 +18,7 @@ bool Admin::Login(const string& username, const string& password)
 	return right_username == username && right_password == password;
 }
 
-bool Admin::AddCar(const string& make, const string& model, const string& fuel_type, const int& year, const int& price)
+bool Admin::AddCar(const std::string& make, const std::string& model, const std::string& fuel_type, const int& year, const int& price)
 {
 	makes.push_back(make);
 	models.push_back(model);
@@ -29,11 +30,11 @@ bool Admin::AddCar(const string& make, const string& model, const string& fuel_t
 
 bool Admin::Remove(const int& index)
 {
-	swap(makes[index], makes[makes.size() - 1]);
-	swap(models[index], models[models.size() - 1]);
-	swap(fuel_types[index], fuel_types[fuel_types.size() - 1]);
-	swap(years[index], years[years.size() - 1]);
-	swap(prices[index], prices[prices.size() - 1]);
+	std::swap(makes[index], makes[makes.size() - 1]);
+	std::swap(models[index], models[models.size() - 1]);
+	std::swap(fuel_types[index], fuel_types[fuel_types.size() - 1]);
+	std::swap(years[index], years[years.size() - 1]);
+	std::swap(prices[index], prices[prices.size() - 1]);
 	makes.resize(makes.size() - 1);
 	models.resize(models.size() - 1);
 	fuel_types.resize(fuel_types.size() - 1);
@@ -42,7 +43,7 @@ bool Admin::Remove(const int& index)
 	return SaveCarDetails();
 }
 
-bool Admin::Update(const int& index, const int& choice, const string& detail_name)
+bool Admin::Update(const int& index, const int& choice, const std::string& detail_name)
 {
 	switch (choice)
 	{
@@ -56,10 +57,10 @@ bool Admin::Update(const int& index, const int& choice, const string& detail_nam
 		fuel_types[index] = detail_name;
 		break;
 	case 4:
-		years[index] = stoi(detail_name);
+		years[index] = std::stoi(detail_name);
 		break;
 	case 5:
-		prices[index] = stoi(detail_name);
+		prices[index] = std::stoi(detail_name);
 		break;
 	}
 	return SaveCarDetails();

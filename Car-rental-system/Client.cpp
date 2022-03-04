@@ -1,15 +1,16 @@
+#include "pch.h"
 #include "Client.h"
 
-bool Client::Login(const string& username, const string& password)
+bool Client::Login(const std::string& username, const std::string& password)
 {
-	string right_username, right_password;
-	ifstream client("Clients.txt");
+	std::string right_username, right_password;
+	std::ifstream client("Clients.txt");
 	if (client.is_open())
 	{
 		while (!client.eof())
 		{
-			getline(client, right_username);
-			getline(client, right_password);
+			std::getline(client, right_username);
+			std::getline(client, right_password);
 			if (right_username == username && right_password == password)
 			{
 				client.close();
@@ -25,10 +26,10 @@ bool Client::Login(const string& username, const string& password)
 	return false;
 }
 
-void Client::Register(const string& username, const string& password) const
+void Client::Register(const std::string& username, const std::string& password) const
 {
-	ofstream client;
-	client.open("Clients.txt", ios::app);
+	std::ofstream client;
+	client.open("Clients.txt", std::ios::app);
 	if (client.is_open())
 	{
 		client << "\n" << username << "\n" << password;

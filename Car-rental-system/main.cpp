@@ -1,57 +1,53 @@
-﻿#include "Custom Functions.h"
+﻿#include "pch.h"
 #include "Client.h"
 #include "Admin.h"
 
 // Develop:
-//
-// Precompiled headers
-//
 // Lambda for try-catch functions
-//
-// Separating #includes into different files by best practice
-//
+// 
 // Making Files More Readable 
 
 int main()
 {
 	// Basic Variables
-	vector<string> buffer;
-	unique_ptr<Client> client;
-	unique_ptr<Admin> admin;
+	std::vector<std::string> buffer;
+	std::unique_ptr<Client> client;
+	std::unique_ptr<Admin> admin;
 	try
 	{
-		client = make_unique<Client>();
-		admin = make_unique<Admin>();
+		client = std::make_unique<Client>();
+		admin = std::make_unique<Admin>();
 	}
-	catch (const exception& e)
+	catch (const std::exception& e)
 	{
-		cout << e.what();
+		std::cout << e.what();
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 		return 0;
 	}
 	int choice = 0;
 	// Lambda For Displaying Menu
-	auto Menus = [&choice, &buffer](string title) {
+	auto Menus = [&choice, &buffer](std::string title)
+	{
 		choice = 0;
 		while (choice <= 0 || choice > buffer.size())
 		{
-			cout << CenteredText(title, 20) << "\n\n";
+			std::cout << custom::CenteredText(title, 20) << "\n\n";
 			for (int i = 0; i < buffer.size(); i++)
 			{
-				cout << i + 1 << ") " << buffer[i] << "\n";
+				std::cout << i + 1 << ") " << buffer[i] << "\n";
 			}
-			cout << "Your Choice: "; cin >> choice;
+			custom::GetInput(choice, "Your Choice: ");
 			system("cls");
 		}
 		buffer.clear();
 	};
 	// Logging Variables
-	string username, password;
+	std::string username, password;
 	// Add Function Variables
-	string make, model, fuel_type;
+	std::string make, model, fuel_type;
 	int year, price;
 	// Modify Details;
-	int choice_helper; string new_car_detail_name;
+	int choice_helper; std::string detail_name;
 
 	// Main Menu
 	buffer.push_back("Login as Admin");
@@ -62,24 +58,25 @@ int main()
 	{
 	case 1:
 		// Login As Admin
-		cout << "Enter Username: "; cin >> username;
-		cout << "Enter Password: "; cin >> password; cout << "\n";
+		custom::GetInput(username, "Enter Username: ");
+		custom::GetInput(password, "Enter Password: ");
+		std::cout << '\n';
 		try
 		{
 			if (!admin->Login(username, password))
 			{
-				cout << "Wrong Username Or Password\n";
+				std::cout << "Wrong Username Or Password\n";
 				std::this_thread::sleep_for(std::chrono::seconds(1));
 				return 0;
 			}
 		}
-		catch (const exception& e)
+		catch (const std::exception& e)
 		{
-			cout << e.what();
+			std::cout << e.what();
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 			return 0;
 		}
-		cout << "Login Successfull\n";
+		std::cout << "Login Successfull\n";
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 		// Admin's Menu
 		while (true)
@@ -98,28 +95,28 @@ int main()
 			{
 			case 1:
 				// Add New Car
-				cout << CenteredText("Add New Car", 20);
-				cout << "\n\nCar's Make: "; getline(cin >> ws, make);
-				cout << "Model: "; getline(cin >> ws, model);
-				cout << "Fuel Type: "; getline(cin >> ws, fuel_type);
-				cout << "Year Of Production: "; cin >> year;
-				cout << "Price for 1 day (CZK): "; cin >> price;
+				std::cout << custom::CenteredText("Add New Car", 20) << "\n\n";
+				custom::GetInput(make, "Car's Make: ");
+				custom::GetInput(model, "Model: ");
+				custom::GetInput(fuel_type, "Fuel Type: ");
+				custom::GetInput(year, "Year Of Production: ");
+				custom::GetInput(price, "Price for 1 day: ");
 				try
 				{
 					if(!admin->AddCar(make, model, fuel_type, year, price))
 					{
-						cout << "\nCar Not Added Due To Error\n";
+						std::cout << "\nCar Not Added Due To Error\n";
 						std::this_thread::sleep_for(std::chrono::seconds(1));
 						return 0;
 					}
 				}
-				catch (const exception& e)
+				catch (const std::exception& e)
 				{
-					cout << e.what();
+					std::cout << e.what();
 					std::this_thread::sleep_for(std::chrono::seconds(1));
 					return 0;
 				}
-				cout << "\nCar Successfully Added\n";
+				std::cout << "\nCar Successfully Added\n";
 				std::this_thread::sleep_for(std::chrono::seconds(1));
 				break;
 			case 2:
@@ -127,9 +124,9 @@ int main()
 				choice = 0;
 				while (choice <= 0 || choice > admin->GetCars())
 				{
-					cout << CenteredText("Choose car", 20) << "\n\n";
+					std::cout << custom::CenteredText("Choose car", 20) << "\n\n";
 					admin->ChooseCar();
-					cout << "Your Choice: "; cin >> choice;
+					custom::GetInput(choice, "Your Choice: ");
 					system("cls");
 				}
 				choice_helper = choice;
@@ -139,24 +136,24 @@ int main()
 				buffer.push_back("Year Of Production");
 				buffer.push_back("Price");
 				Menus("Details To Modify");
-				cout << "Write New Car Detail: "; cin >> new_car_detail_name;
+				custom::GetInput(detail_name, "Write New Car Detail: ");
 				system("cls");
 				try
 				{
-					if (!admin->Update(choice_helper - 1, choice, new_car_detail_name))
+					if (!admin->Update(choice_helper - 1, choice, detail_name))
 					{
-						cout << "Car Detail Not Modified Due To Error\n";
+						std::cout << "Car Detail Not Modified Due To Error\n";
 						std::this_thread::sleep_for(std::chrono::seconds(1));
 						return 0;
 					}
 				}
-				catch (const exception& e)
+				catch (const std::exception& e)
 				{
-					cout << e.what();
+					std::cout << e.what();
 					std::this_thread::sleep_for(std::chrono::seconds(1));
 					return 0;
 				}
-				cout << "Car Detail Succesfully Modified\n";
+				std::cout << "Car Detail Succesfully Modified\n";
 				std::this_thread::sleep_for(std::chrono::seconds(1));
 				break;
 			case 3:
@@ -164,27 +161,27 @@ int main()
 				choice = 0;
 				while (choice <= 0 || choice > admin->GetCars())
 				{
-					cout << CenteredText("Choose car", 20) << "\n\n";
+					std::cout << custom::CenteredText("Choose car", 20) << "\n\n";
 					admin->ChooseCar();
-					cout << "Your Choice: "; cin >> choice;
+					custom::GetInput(choice, "Your Choice: ");
 					system("cls");
 				}
 				try
 				{
 					if (!admin->Remove(choice - 1))
 					{
-						cout << "Car Not Removed Due To Error\n";
+						std::cout << "Car Not Removed Due To Error\n";
 						std::this_thread::sleep_for(std::chrono::seconds(1));
 						return 0;
 					}
 				}
-				catch (const exception& e)
+				catch (const std::exception& e)
 				{
-					cout << e.what();
+					std::cout << e.what();
 					std::this_thread::sleep_for(std::chrono::seconds(1));
 					return 0;
 				}
-				cout << "Car Successfully Removed\n";
+				std::cout << "Car Successfully Removed\n";
 				std::this_thread::sleep_for(std::chrono::seconds(1));
 				break;
 			case 4:
@@ -205,7 +202,7 @@ int main()
 				return 0;
 			}
 			std::this_thread::sleep_for(std::chrono::seconds(1));
-			cout << "\n\n\nPress [Any Key] For Menu\n";
+			std::cout << "\n\n\nPress [Any Key] For Menu\n";
 			_getch();
 		}
 	case 2:
@@ -213,8 +210,9 @@ int main()
 		buffer.push_back("Login As Client");
 		buffer.push_back("Register As Client");
 		Menus("Client Login Menu");
-		cout << "Enter Username: "; cin >> username;
-		cout << "Enter Password: "; cin >> password; cout << "\n";
+		custom::GetInput(username, "Enter Username");
+		custom::GetInput(password, "Enter Password");
+		std::cout << "\n";
 		switch (choice)
 		{
 		case 1:
@@ -223,18 +221,18 @@ int main()
 			{
 				if (!client->Login(username, password))
 				{
-					cout << "Wrong Username Or Password\n";
+					std::cout << "Wrong Username Or Password\n";
 					std::this_thread::sleep_for(std::chrono::seconds(1));
 					return 0;
 				}
 			}
-			catch (const exception& e)
+			catch (const std::exception& e)
 			{
-				cout << e.what();
+				std::cout << e.what();
 				std::this_thread::sleep_for(std::chrono::seconds(1));
 				return 0;
 			}
-			cout << "Login Successfull\n";
+			std::cout << "Login Successfull\n";
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 			break;
 		case 2:
@@ -243,13 +241,13 @@ int main()
 			{
 				client->Register(username, password);
 			}
-			catch (const exception& e)
+			catch (const std::exception& e)
 			{
-				cout << e.what();
+				std::cout << e.what();
 				std::this_thread::sleep_for(std::chrono::seconds(1));
 				return 0;
 			}
-			cout << "Register Successfull\n";
+			std::cout << "Register Successfull\n";
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 			break;
 		}
@@ -282,7 +280,7 @@ int main()
 				// Exit
 				return 0;
 			}
-			cout << "\n\n\nPress [Any Key] For Menu\n";
+			std::cout << "\n\n\nPress [Any Key] For Menu\n";
 			_getch();
 		}
 	case 3:

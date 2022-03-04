@@ -1,10 +1,11 @@
+#include "pch.h"
 #include "User.h"
 
 User::User()
 {
-	string word;
+	std::string word;
 	int number;
-	ifstream read_to_vecs("Cars.txt");
+	std::ifstream read_to_vecs("Cars.txt");
 	if (read_to_vecs.is_open())
 	{
 		while (!read_to_vecs.eof())
@@ -30,7 +31,7 @@ User::User()
 
 bool User::SaveCarDetails() const
 {
-	ofstream save_from_vecs("Cars.txt");
+	std::ofstream save_from_vecs("Cars.txt");
 	if (save_from_vecs.is_open())
 	{
 		for (int i = 0; i < makes.size(); i++)
@@ -50,7 +51,7 @@ bool User::SaveCarDetails() const
 	else
 	{
 		throw std::ios::failure("\nError Opening A File!\n");
-		this_thread::sleep_for(std::chrono::seconds(1));
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		return false;
 	}
 	return true;
@@ -58,15 +59,15 @@ bool User::SaveCarDetails() const
 
 void User::ShowCars() const
 {
-	cout << CenteredText("Makes", 15) << "|" << CenteredText("Model", 15) << "|" <<
-		CenteredText("Fuel Type", 15) << "|" << CenteredText("Year Prod.", 10) << "|" << CenteredText("Price", 12);
-	cout << "\n---------------+---------------+---------------+----------+-------------\n";
+	std::cout << custom::CenteredText("Makes", 15) << "|" << custom::CenteredText("Model", 15) << "|" <<
+		custom::CenteredText("Fuel Type", 15) << "|" << custom::CenteredText("Year Prod.", 10) << "|" << custom::CenteredText("Price", 12);
+	std::cout << "\n---------------+---------------+---------------+----------+-------------\n";
 	for (int i = 0; i < makes.size(); i++)
 	{
-		cout << CenteredText(makes[i], 15) << "|" << CenteredText(models[i], 15) << "|" <<
-			CenteredText(fuel_types[i], 15) << "|" << CenteredText(to_string(years[i]), 10) <<
-			"|" << CenteredText((prices[i] != 0) ? to_string(prices[i]) : "Unavailable", 12);
-		cout << "\n";
+		std::cout << custom::CenteredText(makes[i], 15) << "|" << custom::CenteredText(models[i], 15) << "|" <<
+			custom::CenteredText(fuel_types[i], 15) << "|" << custom::CenteredText(std::to_string(years[i]), 10) <<
+			"|" << custom::CenteredText((prices[i] != 0) ? std::to_string(prices[i]) : "Unavailable", 12);
+		std::cout << "\n";
 	}
 }
 
@@ -74,6 +75,6 @@ void User::ChooseCar() const
 {
 	for (int i = 0; i < makes.size(); i++)
 	{
-		cout << i + 1 << ") " << makes[i] << " " << models[i] << "\n";
+		std::cout << i + 1 << ") " << makes[i] << " " << models[i] << "\n";
 	}
 }

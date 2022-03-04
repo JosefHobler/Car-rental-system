@@ -1,13 +1,12 @@
 #pragma once
-#include "Custom Functions.h"
 #include "User.h"
 
 class Admin : public User
 {
 private:
 public:
-	bool Login(const string& username, const string& password) override;
-	bool AddCar(const string& make, const string& model, const string& fuel_type, const int& year, const int& price);
+	bool Login(const std::string& username, const std::string& password) override;
+	bool AddCar(const std::string& make, const std::string& model, const std::string& fuel_type, const int& year, const int& price);
 	bool Remove(const int& index);
-	bool Update(const int& index, const int& choice, const string& detail_name);
+	bool Update(const int& index, const int& choice, const std::string& detail_name);
 };
