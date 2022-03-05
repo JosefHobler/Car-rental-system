@@ -4,16 +4,25 @@
 bool Admin::Login(const std::string& username, const std::string& password)
 {
 	std::string right_username, right_password;
-	std::ifstream admin("Admin.txt");
-	if (admin.is_open())
+	try
 	{
-		getline(admin, right_username);
-		getline(admin, right_password);
-		admin.close();
+		std::ifstream admin("Admin.txt");
+		if (admin.is_open())
+		{
+			getline(admin, right_username);
+			getline(admin, right_password);
+			admin.close();
+		}
+		else
+		{
+			throw std::ios::failure("Error Opening A File!\n");
+		}
 	}
-	else
+	catch (const std::exception& e)
 	{
-		throw std::ios::failure("Error Opening A File!\n");
+		std::cout << e.what();
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+		return false;
 	}
 	return right_username == username && right_password == password;
 }

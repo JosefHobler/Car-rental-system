@@ -4,39 +4,58 @@
 bool Client::Login(const std::string& username, const std::string& password)
 {
 	std::string right_username, right_password;
-	std::ifstream client("Clients.txt");
-	if (client.is_open())
+	try
 	{
-		while (!client.eof())
+		std::ifstream client("Clients.txt");
+		if (client.is_open())
 		{
-			std::getline(client, right_username);
-			std::getline(client, right_password);
-			if (right_username == username && right_password == password)
+			while (!client.eof())
 			{
-				client.close();
-				return true;
+				std::getline(client, right_username);
+				std::getline(client, right_password);
+				if (right_username == username && right_password == password)
+				{
+					client.close();
+					return true;
+				}
 			}
 		}
-	}
-	else
-	{
-		throw std::ios::failure("Error Opening A File!\n");
-	}
-	client.close();
-	return false;
-}
-
-void Client::Register(const std::string& username, const std::string& password) const
-{
-	std::ofstream client;
-	client.open("Clients.txt", std::ios::app);
-	if (client.is_open())
-	{
-		client << "\n" << username << "\n" << password;
+		else
+		{
+			throw std::ios::failure("Error Opening A File!\n");
+		}
 		client.close();
 	}
-	else
+	catch (const std::exception& e)
 	{
-		throw std::ios::failure("Error Opening A File!\n");
+		std::cout << e.what();
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+		return false;
 	}
+	return true;
+}
+
+bool Client::Register(const std::string& username, const std::string& password) const
+{
+	try
+	{
+		std::ofstream client;
+		client.open("Clients.txt", std::ios::app);
+		if (client.is_open())
+		{
+			client << "\n" << username << "\n" << password;
+			client.close();
+		}
+		else
+		{
+			throw std::ios::failure("Error Opening A File!\n");
+		}
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << e.what();
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+		return false;
+	}
+	return true;
 }

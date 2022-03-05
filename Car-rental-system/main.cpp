@@ -27,8 +27,9 @@ int main()
 		return 0;
 	}
 	int choice = 0;
+	
 	// Lambda For Displaying Menu
-	auto Menus = [&choice, &buffer](std::string title)
+	auto Menus = [&choice, &buffer](const std::string& title)
 	{
 		choice = 0;
 		while (choice <= 0 || choice > buffer.size())
@@ -50,7 +51,6 @@ int main()
 	int year, price;
 	// Modify Details;
 	int choice_helper; std::string detail_name;
-
 	// Main Menu
 	buffer.push_back("Login as Admin");
 	buffer.push_back("Run App As Client");
@@ -63,18 +63,9 @@ int main()
 		custom::GetInput(username, "Enter Username: ");
 		custom::GetInput(password, "Enter Password: ");
 		std::cout << '\n';
-		try
+		if (!admin->Login(username, password))
 		{
-			if (!admin->Login(username, password))
-			{
-				std::cout << "Wrong Username Or Password\n";
-				std::this_thread::sleep_for(std::chrono::seconds(1));
-				return 0;
-			}
-		}
-		catch (const std::exception& e)
-		{
-			std::cout << e.what();
+			std::cout << "Wrong Username Or Password\n";
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 			return 0;
 		}
@@ -103,19 +94,9 @@ int main()
 				custom::GetInput(fuel_type, "Fuel Type: ");
 				custom::GetInput(year, "Year Of Production: ");
 				custom::GetInput(price, "Price for 1 day: ");
-				try
+				if (!admin->AddCar(make, model, fuel_type, year, price))
 				{
-					if(!admin->AddCar(make, model, fuel_type, year, price))
-					{
-						std::cout << "\nCar Not Added Due To Error\n";
-						std::this_thread::sleep_for(std::chrono::seconds(1));
-						return 0;
-					}
-				}
-				catch (const std::exception& e)
-				{
-					std::cout << e.what();
-					std::this_thread::sleep_for(std::chrono::seconds(1));
+					std::cout << "\nError";
 					return 0;
 				}
 				std::cout << "\nCar Successfully Added\n";
@@ -140,19 +121,9 @@ int main()
 				Menus("Details To Modify");
 				custom::GetInput(detail_name, "Write New Car Detail: ");
 				system("cls");
-				try
+				if (!admin->Update(choice_helper - 1, choice, detail_name))
 				{
-					if (!admin->Update(choice_helper - 1, choice, detail_name))
-					{
-						std::cout << "Car Detail Not Modified Due To Error\n";
-						std::this_thread::sleep_for(std::chrono::seconds(1));
-						return 0;
-					}
-				}
-				catch (const std::exception& e)
-				{
-					std::cout << e.what();
-					std::this_thread::sleep_for(std::chrono::seconds(1));
+					std::cout << "\nError";
 					return 0;
 				}
 				std::cout << "Car Detail Succesfully Modified\n";
@@ -168,19 +139,9 @@ int main()
 					custom::GetInput(choice, "Your Choice: ");
 					system("cls");
 				}
-				try
+				if (!admin->Remove(choice - 1))
 				{
-					if (!admin->Remove(choice - 1))
-					{
-						std::cout << "Car Not Removed Due To Error\n";
-						std::this_thread::sleep_for(std::chrono::seconds(1));
-						return 0;
-					}
-				}
-				catch (const std::exception& e)
-				{
-					std::cout << e.what();
-					std::this_thread::sleep_for(std::chrono::seconds(1));
+					std::cout << "\nError";
 					return 0;
 				}
 				std::cout << "Car Successfully Removed\n";
@@ -219,19 +180,9 @@ int main()
 		{
 		case 1:
 			// Login As Client
-			try
+			if (!client->Login(username, password))
 			{
-				if (!client->Login(username, password))
-				{
-					std::cout << "Wrong Username Or Password\n";
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-					return 0;
-				}
-			}
-			catch (const std::exception& e)
-			{
-				std::cout << e.what();
-				std::this_thread::sleep_for(std::chrono::seconds(1));
+				std::cout << "Wrong Username Or Password´\n";
 				return 0;
 			}
 			std::cout << "Login Successfull\n";
@@ -239,14 +190,9 @@ int main()
 			break;
 		case 2:
 			// Register New Client
-			try
+			if (!client->Register(username, password))
 			{
-				client->Register(username, password);
-			}
-			catch (const std::exception& e)
-			{
-				std::cout << e.what();
-				std::this_thread::sleep_for(std::chrono::seconds(1));
+				std::cout << "Error\n";
 				return 0;
 			}
 			std::cout << "Register Successfull\n";

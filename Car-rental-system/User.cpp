@@ -31,26 +31,34 @@ User::User()
 
 bool User::SaveCarDetails() const
 {
-	std::ofstream save_from_vecs("Cars.txt");
-	if (save_from_vecs.is_open())
+	try
 	{
-		for (int i = 0; i < makes.size(); i++)
+		std::ofstream save_from_vecs("Cars.txt");
+		if (save_from_vecs.is_open())
 		{
-			save_from_vecs << makes[i] << "\n";
-			save_from_vecs << models[i] << "\n";
-			save_from_vecs << fuel_types[i] << "\n";
-			save_from_vecs << years[i] << "\n";
-			save_from_vecs << prices[i];
-			if (i != makes.size() - 1)
+			for (int i = 0; i < makes.size(); i++)
 			{
-				save_from_vecs << "\n";
+				save_from_vecs << makes[i] << "\n";
+				save_from_vecs << models[i] << "\n";
+				save_from_vecs << fuel_types[i] << "\n";
+				save_from_vecs << years[i] << "\n";
+				save_from_vecs << prices[i];
+				if (i != makes.size() - 1)
+				{
+					save_from_vecs << "\n";
+				}
 			}
+			save_from_vecs.close();
 		}
-		save_from_vecs.close();
+		else
+		{
+			throw std::ios::failure("\nError Opening A File!\n");
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+		}
 	}
-	else
+	catch (const std::exception& e)
 	{
-		throw std::ios::failure("\nError Opening A File!\n");
+		std::cout << e.what();
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 		return false;
 	}
