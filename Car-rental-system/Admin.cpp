@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Admin.h"
 
 bool Admin::Login(const std::string& username, const std::string& password)
@@ -34,6 +33,7 @@ bool Admin::AddCar(const std::string& make, const std::string& model, const std:
 	fuel_types.push_back(fuel_type);
 	years.push_back(year);
 	prices.push_back(price);
+	available.push_back("Available");
 	return SaveCarDetails();
 }
 
@@ -44,6 +44,7 @@ bool Admin::Remove(const int& index)
 	std::swap(fuel_types[index], fuel_types[fuel_types.size() - 1]);
 	std::swap(years[index], years[years.size() - 1]);
 	std::swap(prices[index], prices[prices.size() - 1]);
+	std::swap(available[index], available[available.size() - 1]);
 	makes.resize(makes.size() - 1);
 	models.resize(models.size() - 1);
 	fuel_types.resize(fuel_types.size() - 1);

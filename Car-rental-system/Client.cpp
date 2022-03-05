@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Client.h"
 
 bool Client::Login(const std::string& username, const std::string& password)

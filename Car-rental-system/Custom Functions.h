@@ -1,27 +1,22 @@
-#include "pch.h"
+#pragma once
+
+#include <memory>
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <chrono>
+#include <thread>
+#include <conio.h>
+#include <string>
+#include <limits>
+#include <iomanip>
 
 namespace custom
 {
-	std::string CenteredText(std::string msg, const int& size_to_center)
-	{
-		bool space = true;
-		for (int i = msg.size(); i < size_to_center; i++)
-		{
-			if (space)
-			{
-				msg += ' ';
-			}
-			else
-			{
-				msg = ' ' + msg;
-			}
-			space = !space;
-		}
-		return msg;
-	}
+	extern std::string CenteredText(std::string msg, const int& size_to_center);
 
 	template<typename T>
-	void GetInput(T& input, const std::string& msg)
+	extern void GetInput(T& input, const std::string& msg)
 	{
 		std::cout << msg;
 		std::cin >> input;
