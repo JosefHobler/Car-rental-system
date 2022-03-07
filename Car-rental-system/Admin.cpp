@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Admin.h"
 
 bool Admin::Login(const std::string& username, const std::string& password)
@@ -28,26 +29,26 @@ bool Admin::Login(const std::string& username, const std::string& password)
 
 bool Admin::AddCar(const std::string& make, const std::string& model, const std::string& fuel_type, const int& year, const int& price)
 {
-	makes.push_back(make);
-	models.push_back(model);
-	fuel_types.push_back(fuel_type);
-	years.push_back(year);
-	prices.push_back(price);
-	available.push_back("Available");
+	this->make.push_back(make);
+	this->model.push_back(model);
+	this->fuel_type.push_back(fuel_type);
+	this->years.push_back(year);
+	this->prices.push_back(price);
+	available.push_back(true);
 	return SaveCarDetails();
 }
 
 bool Admin::Remove(const int& index)
 {
-	std::swap(makes[index], makes[makes.size() - 1]);
-	std::swap(models[index], models[models.size() - 1]);
-	std::swap(fuel_types[index], fuel_types[fuel_types.size() - 1]);
-	std::swap(years[index], years[years.size() - 1]);
-	std::swap(prices[index], prices[prices.size() - 1]);
-	std::swap(available[index], available[available.size() - 1]);
-	makes.resize(makes.size() - 1);
-	models.resize(models.size() - 1);
-	fuel_types.resize(fuel_types.size() - 1);
+	make[index] = make[make.size() - 1];
+	model[index] = model[model.size() - 1];
+	fuel_type[index] = fuel_type[fuel_type.size() - 1];
+	years[index] = years[years.size() - 1];
+	prices[index] = prices[prices.size() - 1];
+	available[index] = available[available.size() - 1];
+	make.resize(make.size() - 1);
+	model.resize(model.size() - 1);
+	fuel_type.resize(fuel_type.size() - 1);
 	years.resize(years.size() - 1);
 	prices.resize(prices.size() - 1);
 	return SaveCarDetails();
@@ -58,13 +59,13 @@ bool Admin::Update(const int& index, const int& choice, const std::string& detai
 	switch (choice)
 	{
 	case 1:
-		makes[index] = detail_name;
+		make[index] = detail_name;
 		break;
 	case 2:
-		models[index] = detail_name;
+		model[index] = detail_name;
 		break;
 	case 3:
-		fuel_types[index] = detail_name;
+		fuel_type[index] = detail_name;
 		break;
 	case 4:
 		years[index] = std::stoi(detail_name);

@@ -10,6 +10,7 @@
 #include <string>
 #include <limits>
 #include <iomanip>
+#include <map>
 
 namespace custom
 {

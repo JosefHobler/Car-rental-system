@@ -1,0 +1,32 @@
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Josef
+
+Description
+Make: Chevrolet
+Model: coupe
+Days: 15
+Price/Day: 15$
+_________________________________
+Total Charge: 225$
+_________________________________
+------------THANK YOU------------
+
+
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Josef
+
+Description
+Make: Fiat
+Model: Stilo
+Days: 100
+Price/Day: 10$
+_________________________________
+Total Charge: 1000$
+_________________________________
+------------THANK YOU------------
+
+

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Client.h"
 
 bool Client::Login(const std::string& username, const std::string& password)
@@ -31,7 +32,7 @@ bool Client::Login(const std::string& username, const std::string& password)
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 		return false;
 	}
-	return true;
+	return false;
 }
 
 bool Client::Register(const std::string& username, const std::string& password) const

@@ -1,0 +1,208 @@
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Zmrd
+
+Description
+Make: Fiat
+Model: Multipla
+Days: 10
+Price/Day: 25$
+_________________________________
+Total Charge: 250$
+_________________________________
+------------THANK YOU------------
+
+
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Zmrd
+
+Description
+Make: Fiat
+Model: Stilo
+Days: 100
+Price/Day: 10$
+_________________________________
+Total Charge: 1000$
+_________________________________
+------------THANK YOU------------
+
+
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Zmrd
+
+Description
+Make: Mercedes
+Model: Benz
+Days: 100
+Price/Day: 100$
+_________________________________
+Total Charge: 10000$
+_________________________________
+------------THANK YOU------------
+
+
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Zmrd
+
+Description
+Make: Toyota
+Model: Kayat
+Days: 10
+Price/Day: 1000$
+_________________________________
+Total Charge: 10000$
+_________________________________
+------------THANK YOU------------
+
+
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Zmrd
+
+Description
+Make: FFW
+Model: FW
+Days: 10
+Price/Day: 1$
+_________________________________
+Total Charge: 10$
+_________________________________
+------------THANK YOU------------
+
+
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Zmrd
+
+Description
+Make: Fiat
+Model: Multipla
+Days: 10
+Price/Day: 25$
+_________________________________
+Total Charge: 250$
+_________________________________
+------------THANK YOU------------
+
+
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Zmrd
+
+Description
+Make: Fiat
+Model: Multipla
+Days: 10
+Price/Day: 25$
+_________________________________
+Total Charge: 250$
+_________________________________
+------------THANK YOU------------
+
+
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Zmrd
+
+Description
+Make: Fiat
+Model: Stilo
+Days: 10
+Price/Day: 10$
+_________________________________
+Total Charge: 100$
+_________________________________
+------------THANK YOU------------
+
+
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Zmrd
+
+Description
+Make: FFW
+Model: FW
+Days: 1000
+Price/Day: 1$
+_________________________________
+Total Charge: 1000$
+_________________________________
+------------THANK YOU------------
+
+
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Zmrd
+
+Description
+Make: Mercedes
+Model: Benz
+Days: 10
+Price/Day: 100$
+_________________________________
+Total Charge: 1000$
+_________________________________
+------------THANK YOU------------
+
+
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Zmrd
+
+Description
+Make: Fiat
+Model: Multipla
+Days: 10
+Price/Day: 25$
+_________________________________
+Total Charge: 250$
+_________________________________
+------------THANK YOU------------
+
+
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Zmrd
+
+Description
+Make: Fiat
+Model: Stilo
+Days: 10
+Price/Day: 10$
+_________________________________
+Total Charge: 100$
+_________________________________
+------------THANK YOU------------
+
+
+--------ABC Servis Agency--------
+-------------Receipt-------------
+_________________________________
+Customer Name: Zmrd
+
+Description
+Make: Fiat
+Model: Multipla
+Days: 10
+Price/Day: 25$
+_________________________________
+Total Charge: 250$
+_________________________________
+------------THANK YOU------------
+
+

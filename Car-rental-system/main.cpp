@@ -1,5 +1,7 @@
-﻿#include "Client.h"
+﻿#include "pch.h"
+#include "Client.h"
 #include "Admin.h"
+
 
 // Develop:
 // Lambda for try-catch functions
@@ -14,26 +16,27 @@ int main()
 	std::vector<std::string> buffer;
 	std::unique_ptr<Client> client;
 	std::unique_ptr<Admin> admin;
-	try
-	{
-		client = std::make_unique<Client>();
-		admin = std::make_unique<Admin>();
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << e.what();
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-		return 0;
-	}
 	int choice = 0;
 	// Lambda For Searching Desired Car
-	auto Search = [&choice, &admin]()
+	auto Search = [&choice](User* user)
 	{
 		choice = 0;
-		while (choice <= 0 || choice > admin->GetCars())
+		while (choice <= 0 || choice > user->GetCars())
 		{
 			std::cout << custom::CenteredText("Choose car", 20) << "\n\n";
-			admin->ChooseCar();
+			user->ChooseCar();
+			custom::GetInput<int>(choice, "Your Choice: ");
+			system("cls");
+		}
+	};
+	// Lambda For Searching Lent Desired Car
+	auto Search2 = [&choice](User* user)
+	{
+		choice = 0;
+		while (choice <= 0 || choice > user->GetLentCars())
+		{
+			std::cout << custom::CenteredText("Choose car", 20) << "\n\n";
+			user->ChooseLentCar();
 			custom::GetInput<int>(choice, "Your Choice: ");
 			system("cls");
 		}
@@ -76,6 +79,16 @@ int main()
 		custom::GetInput<std::string>(username, "Enter Username: ");
 		custom::GetInput<std::string>(password, "Enter Password: ");
 		std::cout << '\n';
+		try
+		{
+			admin = std::make_unique<Admin>();
+		}
+		catch (const std::exception& e)
+		{
+			std::cout << e.what();
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+			return 0;
+		}
 		if (!admin->Login(username, password))
 		{
 			std::cout << "Wrong Username Or Password\n";
@@ -93,7 +106,6 @@ int main()
 			buffer.push_back("Remove Any Car");
 			buffer.push_back("List Of Cars");
 			buffer.push_back("Check Any Car");
-			buffer.push_back("Modify Rent Details");
 			buffer.push_back("Rent A Car");
 			buffer.push_back("Return A Car");
 			buffer.push_back("Exit");
@@ -119,7 +131,7 @@ int main()
 				break;
 			case 2:
 				// Update Car's Details
-				Search();
+				Search(admin.get());
 				choice_helper = choice;
 				buffer.push_back("Make");
 				buffer.push_back("Model");
@@ -140,7 +152,7 @@ int main()
 				break;
 			case 3:
 				// Remove Any Car
-				Search();
+				Search(admin.get());
 				if (!admin->Remove(choice - 1))
 				{
 					std::cout << "\nError";
@@ -156,26 +168,13 @@ int main()
 				break;
 			case 5:
 				// Check Any Car
-				Search();
+				Search(admin.get());
 				admin->CheckCar(choice - 1);
 				break;
 			case 6:
-				// Modify Rent Details
-				// Do later
-				Search();
-				if (!admin->ModifyRentDetails(choice - 1))
-				{
-					std::cout << "\nError";
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-					break;
-				}
-				std::cout << "Rent Details Sucessfully Modified\n";
-				std::this_thread::sleep_for(std::chrono::seconds(1));
-				break;
-			case 7:
 				// Rent A Car
-				Search();
-				if (admin->GetAvailable(choice - 1) == "Unavailable")
+				Search(admin.get());
+				if (!admin->GetAvailable(choice - 1))
 				{
 					std::cout << "\nCar Unavailable In Servis";
 					std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -183,7 +182,7 @@ int main()
 				}
 				custom::GetInput<int>(days, "Days ( " + std::to_string(admin->GetPrice(choice - 1)) + "$ Per Day): ");
 				system("cls");
-				if (!admin->PrintBill(username, days, choice - 1) || !admin->ShowBill(username) || !admin->SetAvailable("Unavailable", choice - 1))
+				if (!admin->PrintBill(username, days, choice - 1) || !admin->ShowBill(username) || !admin->SetAvailable(false, choice - 1))
 				{
 					std::cout << "\nError";
 					std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -193,10 +192,37 @@ int main()
 				std::cout << "All Available Receipts In: " << username << "Receipt.txt\n";
 				std::this_thread::sleep_for(std::chrono::seconds(1));
 				break;
-			case 8:
+			case 7:
 				// Return A Car
+				if (!admin->ReadCars(username))
+				{
+					std::cout << "\nError";
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+					break;
+				}
+				if (admin->GetLentCars() == 0)
+				{
+					std::cout << "\nNo Borrowed Cars";
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+					break;
+				}
+				Search2(admin.get());
+				if (!admin->SetAvailable(true, admin->ModelsAt(admin->GetLentCarModel(choice - 1))))
+				{
+					std::cout << "\nError";
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+					break;
+				}
+				if (!admin->Delete(username, choice - 1))
+				{
+					std::cout << "\nError";
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+					break;
+				}
+				std::cout << "\nSucessfully Returned";
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 				break;
-			case 9:
+			case 8:
 				// Exit
 				return 0;
 			}
@@ -209,9 +235,19 @@ int main()
 		buffer.push_back("Login As Client");
 		buffer.push_back("Register As Client");
 		Menus("Client Login Menu");
-		custom::GetInput<std::string>(username, "Enter Username");
-		custom::GetInput<std::string>(password, "Enter Password");
+		custom::GetInput<std::string>(username, "Enter Username: ");
+		custom::GetInput<std::string>(password, "Enter Password: ");
 		std::cout << "\n";
+		try
+		{
+			client = std::make_unique<Client>();
+		}
+		catch (const std::exception& e)
+		{
+			std::cout << e.what();
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+			return 0;
+		}
 		switch (choice)
 		{
 		case 1:
@@ -243,7 +279,6 @@ int main()
 			system("cls");
 			buffer.push_back("List Of Cars");
 			buffer.push_back("Check Any Car");
-			buffer.push_back("Modify Rent Details");
 			buffer.push_back("Rent A Car");
 			buffer.push_back("Return A Car");
 			buffer.push_back("Exit");
@@ -256,19 +291,55 @@ int main()
 				break;
 			case 2:
 				// Check Any Car
-				Search();
+				Search(client.get());
 				client->CheckCar(choice - 1);
 				break;
 			case 3:
-				// Modify Rent Details
+				// Rent A Car
+				Search(client.get());
+				if (!client->GetAvailable(choice - 1))
+				{
+					std::cout << "Car Unavailable In Servis\n";
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+					break;
+				}
+				custom::GetInput<int>(days, "Days ( " + std::to_string(client->GetPrice(choice - 1)) + "$ Per Day): ");
+				system("cls");
+				if (!client->PrintBill(username, days, choice - 1) || !client->ShowBill(username) || !client->SetAvailable(false, choice - 1))
+				{
+					std::cout << "\nError";
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+					break;
+				}
+				std::cout << "\n\nSucessfully Rented!\n";
+				std::cout << "All Available Receipts In: " << username << "Receipt.txt\n";
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 				break;
 			case 4:
-				// Rent A Car
+				// Return A Car
+				if (!client->ReadCars(username))
+				{
+					std::cout << "\nError";
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+					break;
+				}
+				Search2(client.get());
+				if (!client->SetAvailable(true, client->ModelsAt(client->GetLentCarModel(choice - 1))))
+				{
+					std::cout << "\nError";
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+					break;
+				}
+				if (!client->Delete(username, choice - 1))
+				{
+					std::cout << "\nError";
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+					break;
+				}
+				std::cout << "\nSucessfully Returned";
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 				break;
 			case 5:
-				// Return A Car
-				break;
-			case 6:
 				// Exit
 				return 0;
 			}
@@ -280,4 +351,3 @@ int main()
 		return 0;
 	}
 }
-
