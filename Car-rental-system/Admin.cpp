@@ -40,12 +40,20 @@ bool Admin::AddCar(const std::string& make, const std::string& model, const std:
 
 bool Admin::Remove(const int& index)
 {
+	std::swap(make[index], make[make.size() - 1]);
+	std::swap(model[index], model[model.size() - 1]);
+	std::swap(fuel_type[index], fuel_type[fuel_type.size() - 1]);
+	std::swap(years[index], years[years.size() - 1]);
+	std::swap(prices[index], prices[prices.size() - 1]);
+	swap(available[index], available[available.size() - 1]);
+	/*
+	available[index] = available[available.size() - 1];
 	make[index] = make[make.size() - 1];
 	model[index] = model[model.size() - 1];
 	fuel_type[index] = fuel_type[fuel_type.size() - 1];
 	years[index] = years[years.size() - 1];
 	prices[index] = prices[prices.size() - 1];
-	available[index] = available[available.size() - 1];
+	*/
 	make.resize(make.size() - 1);
 	model.resize(model.size() - 1);
 	fuel_type.resize(fuel_type.size() - 1);

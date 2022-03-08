@@ -17,6 +17,7 @@ int main()
 	std::unique_ptr<Client> client;
 	std::unique_ptr<Admin> admin;
 	int choice = 0;
+
 	// Lambda For Searching Desired Car
 	auto Search = [&choice](User* user)
 	{
@@ -29,6 +30,7 @@ int main()
 			system("cls");
 		}
 	};
+
 	// Lambda For Searching Lent Desired Car
 	auto Search2 = [&choice](User* user)
 	{
@@ -41,6 +43,7 @@ int main()
 			system("cls");
 		}
 	};
+
 	// Lambda For Displaying Menu
 	auto Menus = [&choice, &buffer](const std::string& title)
 	{
@@ -58,14 +61,68 @@ int main()
 		buffer.clear();
 	};
 	// Logging Variables
+
 	std::string username, password;
+
 	// Add Function Variables
 	std::string make, model, fuel_type;
 	int year, price;
+
 	// Modify Variables;
 	int choice_helper; std::string detail_name;
+
 	// Rent Variables
 	int days;
+
+	// Rent A Car Lambda
+	auto RentCar = [&username, &days, &choice](User* user)
+	{
+		if (!user->GetAvailable(choice - 1))
+		{
+			std::cout << "\nCar Unavailable In Servis";
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+			return false;
+		}
+		custom::GetInput<int>(days, "Days ( " + std::to_string(user->GetPrice(choice - 1)) + "$ Per Day): ");
+		system("cls");
+		if (!user->PrintBill(username, days, choice - 1) || !user->ShowBill(username) || !user->SetAvailable(false, choice - 1))
+		{
+			std::cout << "\nError";
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+			return false;
+		}
+		std::cout << "\n\nSucessfully Rented!\n";
+		std::cout << "All Available Receipts In: " << username << "Receipt.txt\n";
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+	};
+
+	// Return A Car Lambda
+	auto ReturnCar = [&Search2,&username, &choice](User* user)
+	{
+		if (!user->ReadCars(username))
+		{
+			std::cout << "\nError";
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+		}
+		if (user->GetLentCars() == 0)
+		{
+			std::cout << "\nNo Borrowed Cars";
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+		}
+		Search2(user);
+		if (!user->SetAvailable(true, user->ModelsAt(user->GetLentCarModel(choice - 1))))
+		{
+			std::cout << "\nError";
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+		}
+		if (!user->Delete(username, choice - 1))
+		{
+			std::cout << "\nError";
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+		}
+		std::cout << "\nSucessfully Returned";
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+	};
 
 	// Main Menu
 	buffer.push_back("Login as Admin");
@@ -174,53 +231,11 @@ int main()
 			case 6:
 				// Rent A Car
 				Search(admin.get());
-				if (!admin->GetAvailable(choice - 1))
-				{
-					std::cout << "\nCar Unavailable In Servis";
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-					break;
-				}
-				custom::GetInput<int>(days, "Days ( " + std::to_string(admin->GetPrice(choice - 1)) + "$ Per Day): ");
-				system("cls");
-				if (!admin->PrintBill(username, days, choice - 1) || !admin->ShowBill(username) || !admin->SetAvailable(false, choice - 1))
-				{
-					std::cout << "\nError";
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-					break;
-				}
-				std::cout << "\n\nSucessfully Rented!\n";
-				std::cout << "All Available Receipts In: " << username << "Receipt.txt\n";
-				std::this_thread::sleep_for(std::chrono::seconds(1));
+				RentCar(admin.get());
 				break;
 			case 7:
 				// Return A Car
-				if (!admin->ReadCars(username))
-				{
-					std::cout << "\nError";
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-					break;
-				}
-				if (admin->GetLentCars() == 0)
-				{
-					std::cout << "\nNo Borrowed Cars";
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-					break;
-				}
-				Search2(admin.get());
-				if (!admin->SetAvailable(true, admin->ModelsAt(admin->GetLentCarModel(choice - 1))))
-				{
-					std::cout << "\nError";
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-					break;
-				}
-				if (!admin->Delete(username, choice - 1))
-				{
-					std::cout << "\nError";
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-					break;
-				}
-				std::cout << "\nSucessfully Returned";
-				std::this_thread::sleep_for(std::chrono::seconds(1));
+				ReturnCar(admin.get());
 				break;
 			case 8:
 				// Exit
@@ -297,47 +312,11 @@ int main()
 			case 3:
 				// Rent A Car
 				Search(client.get());
-				if (!client->GetAvailable(choice - 1))
-				{
-					std::cout << "Car Unavailable In Servis\n";
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-					break;
-				}
-				custom::GetInput<int>(days, "Days ( " + std::to_string(client->GetPrice(choice - 1)) + "$ Per Day): ");
-				system("cls");
-				if (!client->PrintBill(username, days, choice - 1) || !client->ShowBill(username) || !client->SetAvailable(false, choice - 1))
-				{
-					std::cout << "\nError";
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-					break;
-				}
-				std::cout << "\n\nSucessfully Rented!\n";
-				std::cout << "All Available Receipts In: " << username << "Receipt.txt\n";
-				std::this_thread::sleep_for(std::chrono::seconds(1));
+				RentCar(client.get());
 				break;
 			case 4:
 				// Return A Car
-				if (!client->ReadCars(username))
-				{
-					std::cout << "\nError";
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-					break;
-				}
-				Search2(client.get());
-				if (!client->SetAvailable(true, client->ModelsAt(client->GetLentCarModel(choice - 1))))
-				{
-					std::cout << "\nError";
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-					break;
-				}
-				if (!client->Delete(username, choice - 1))
-				{
-					std::cout << "\nError";
-					std::this_thread::sleep_for(std::chrono::seconds(1));
-					break;
-				}
-				std::cout << "\nSucessfully Returned";
-				std::this_thread::sleep_for(std::chrono::seconds(1));
+				ReturnCar(client.get());
 				break;
 			case 5:
 				// Exit

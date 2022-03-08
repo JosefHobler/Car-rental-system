@@ -158,6 +158,7 @@ bool User::PrintBill(const std::string& username, const int& days, const int& in
 
 bool User::ModifyListOfBorrowers()
 {
+	
 	std::ofstream list("List.txt");
 	if (list.is_open())
 	{
@@ -173,6 +174,7 @@ bool User::ModifyListOfBorrowers()
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 		return false;
 	}
+	
 	return true;
 }
 
@@ -268,10 +270,17 @@ bool User::ReadCars(const std::string& username)
 
 bool User::Delete(const std::string& username, const int& index)
 {
+	std::swap(lent_cars_prices[index], lent_cars_prices[lent_cars_prices.size() - 1]);
+	std::swap(lent_cars_makes[index], lent_cars_makes[lent_cars_makes.size() - 1]);
+	std::swap(lent_cars_models[index], lent_cars_models[lent_cars_models.size() - 1]);
+	std::swap(lent_cars_days[index], lent_cars_days[lent_cars_days.size() - 1]);
+	/*
 	lent_cars_makes[index] = lent_cars_makes[lent_cars_makes.size() - 1];
 	lent_cars_models[index] = lent_cars_models[lent_cars_models.size() - 1];
 	lent_cars_days[index] = lent_cars_days[lent_cars_days.size() - 1];
 	lent_cars_prices[index] = lent_cars_prices[lent_cars_prices.size() - 1];
+	*/
+
 	lent_cars_makes.resize(lent_cars_makes.size() - 1);
 	lent_cars_models.resize(lent_cars_models.size() - 1);
 	lent_cars_days.resize(lent_cars_days.size() - 1);

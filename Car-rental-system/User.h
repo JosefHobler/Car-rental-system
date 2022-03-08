@@ -38,10 +38,10 @@ public:
 	bool ModifyListOfBorrowers();
 
 	inline int GetPrice(const int& index) const { return prices[index]; }
-	inline size_t GetCars() const { return make.size(); }
-	inline size_t GetLentCars() const { return lent_cars_makes.size(); }
+	inline int GetCars() const { return make.size(); }
+	inline int GetLentCars() const { return lent_cars_makes.size(); }
 	inline bool GetAvailable(const int& index) const { return available[index]; }
-	inline size_t GetBorrowersSize() const { return names_of_borrowers.size(); }
+	inline int GetBorrowersSize() const { return names_of_borrowers.size(); }
 	inline std::string GetBorrowerAt(const int& index) const { return names_of_borrowers[index]; }
 	inline int ModelsAt(const std::string model) const { return std::find(model.begin(), model.end(), model) - model.begin(); }
 	inline std::string GetLentCarModel(const int index) const { return lent_cars_models[index]; }

@@ -11,6 +11,7 @@
 #include <limits>
 #include <iomanip>
 #include <map>
+#include <algorithm>
 
 namespace custom
 {
